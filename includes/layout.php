@@ -63,7 +63,20 @@ function render_header(string $title, string $active = ''): void
                 <span>Inventory operations, sales, and reports</span>
             </div>
             <div class="topbar-actions ms-auto">
-                <button class="icon-btn" type="button" aria-label="Notifications"><i class="bi bi-bell"></i><span class="notification-dot"></span></button>
+                <div class="dropdown receipt-notification-wrap">
+                    <button class="icon-btn" id="receiptNotificationBtn" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Receipt notifications">
+                        <i class="bi bi-bell"></i><span class="notification-dot d-none" id="receiptNotificationDot"></span>
+                    </button>
+                    <div class="dropdown-menu dropdown-menu-end receipt-notification-menu">
+                        <div class="receipt-notification-head">
+                            <strong>Receipts</strong>
+                            <button class="btn btn-sm btn-link" type="button" id="refreshReceiptsBtn">Refresh</button>
+                        </div>
+                        <div id="receiptNotificationList" class="receipt-notification-list">
+                            <div class="receipt-notification-empty">No receipts yet.</div>
+                        </div>
+                    </div>
+                </div>
                 <div class="dropdown">
                     <button class="profile-chip dropdown-toggle" type="button" data-bs-toggle="dropdown">
                         <span class="avatar-wrap"><span class="avatar"><?= htmlspecialchars(strtoupper(substr($user['full_name'], 0, 1))) ?></span><span class="online-dot"></span></span>
@@ -91,6 +104,23 @@ function render_footer(array $scripts = []): void
     ?>
         </section>
     </main>
+</div>
+<div class="modal fade" id="receiptDetailModal" tabindex="-1">
+    <div class="modal-dialog modal-lg modal-dialog-scrollable">
+        <div class="modal-content app-modal">
+            <div class="modal-header app-modal-header">
+                <div>
+                    <span class="modal-kicker">Receipt details</span>
+                    <h5 class="modal-title" id="receiptDetailTitle">Receipt</h5>
+                </div>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body app-modal-body" id="receiptDetailBody"></div>
+            <div class="modal-footer app-modal-footer">
+                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>

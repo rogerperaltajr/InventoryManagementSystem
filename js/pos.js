@@ -336,6 +336,7 @@ document.getElementById('saveSale').onclick = async () => {
         cart = [];
         renderCart();
         searchProducts();
+        window.refreshReceiptNotifications?.();
     }
 };
 
