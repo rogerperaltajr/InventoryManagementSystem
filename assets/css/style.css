@@ -1147,6 +1147,41 @@ a {
 .pos-product-grid .product-card {
     border-radius: 16px;
     min-height: 304px;
+    position: relative;
+}
+
+.pos-card-menu {
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    z-index: 3;
+}
+
+.pos-card-menu-btn {
+    width: 34px;
+    height: 34px;
+    display: grid;
+    place-items: center;
+    border: 1px solid rgba(226, 232, 240, .95);
+    border-radius: 999px;
+    background: rgba(255, 255, 255, .94);
+    color: var(--dark);
+    box-shadow: 0 10px 22px rgba(15, 23, 42, .12);
+    transition: background .18s ease, color .18s ease, transform .18s ease;
+}
+
+.pos-card-menu-btn:hover,
+.pos-card-menu-btn.show {
+    background: var(--primary);
+    color: #fff;
+    transform: translateY(-1px);
+}
+
+.pos-card-menu .dropdown-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: 700;
 }
 
 .pos-product-grid .product-image-wrap {

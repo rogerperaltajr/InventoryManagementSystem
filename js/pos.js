@@ -2,7 +2,11 @@ let cart = [];
 let posProducts = new Map();
 let scannerBuffer = '';
 let scannerLastKeyAt = 0;
+let posIsAdmin = false;
+let posProductOptionsLoaded = false;
 const scannerMaxGapMs = 80;
+const productModalEl = document.getElementById('productModal');
+const productModal = productModalEl ? new bootstrap.Modal(productModalEl) : null;
 
 function productImage(product) {
     return product.image_path
@@ -27,8 +31,19 @@ function productSizeText(product) {
 
 function posProductCard(product) {
     const stock = stockInfo(product);
+    const adminMenu = posIsAdmin ? `
+        <div class="dropdown pos-card-menu" onclick="event.stopPropagation();">
+            <button class="pos-card-menu-btn" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Product actions">
+                <i class="bi bi-three-dots-vertical"></i>
+            </button>
+            <ul class="dropdown-menu dropdown-menu-end">
+                <li><button class="dropdown-item" type="button" onclick="editPosProduct(${product.id})"><i class="bi bi-pencil-square"></i> Edit</button></li>
+            </ul>
+        </div>
+    ` : '';
     return `
         <article class="product-card compact" onclick="addProductToCart(${product.id})">
+            ${adminMenu}
             <div class="product-image-wrap">${productImage(product)}</div>
             <div class="product-card-body">
                 <div class="product-title">${product.product_name}</div>
@@ -71,8 +86,67 @@ async function searchProducts(term = '') {
     showPosSkeleton();
     const categoryIds = Array.from(document.getElementById('categoryFilter').selectedOptions).map(option => option.value).filter(Boolean);
     const data = await apiGet(`../php/pos_action.php?action=search&term=${encodeURIComponent(term)}&category_ids=${encodeURIComponent(categoryIds.join(','))}`);
+    posIsAdmin = Boolean(data.is_admin);
     posProducts = new Map(data.rows.map(product => [Number(product.id), product]));
     document.getElementById('posProductGrid').innerHTML = data.rows.map(posProductCard).join('') || '<div class="text-center muted py-5">No products found.</div>';
+}
+
+function fillPosProductSelect(id, rows) {
+    const el = document.getElementById(id);
+    if (!el) return;
+    el.innerHTML = '<option value="">Select</option>' + rows.map(row => `<option value="${row.id}">${row.name}</option>`).join('');
+}
+
+async function loadPosProductOptions() {
+    if (!productModalEl || posProductOptionsLoaded) return;
+    const options = await apiGet('../php/inventory_action.php?action=options');
+    fillPosProductSelect('category_id', options.categories);
+    fillPosProductSelect('brand_id', options.brands);
+    fillPosProductSelect('unit_id', options.units);
+    fillPosProductSelect('supplier_id', options.suppliers);
+    fillPosProductSelect('business_type_id', options.business_types);
+    posProductOptionsLoaded = true;
+}
+
+function resetPosDuplicateWarning() {
+    const box = document.getElementById('duplicateWarning');
+    if (!box) return;
+    box.classList.add('d-none');
+    box.innerHTML = '';
+}
+
+function fillPosProductForm(product) {
+    const form = document.getElementById('productForm');
+    form.reset();
+    resetPosDuplicateWarning();
+    document.getElementById('productModalTitle').textContent = 'Edit Product';
+    Object.keys(product).forEach(key => {
+        const field = form.querySelector(`[name="${key}"]`);
+        if (field && field.type !== 'file') field.value = product[key] ?? '';
+    });
+    document.getElementById('productId').value = product.id || '';
+    document.getElementById('duplicateDecision').value = '';
+    document.getElementById('duplicateReferenceId').value = '';
+}
+
+async function editPosProduct(id) {
+    if (!productModal) return;
+    await loadPosProductOptions();
+    const result = await apiGet(`../php/inventory_action.php?action=view&id=${id}`);
+    if (!result.success) return notify(result.message, 'error');
+    if (!result.product.can_edit) return notify('You cannot edit this product.', 'error');
+    fillPosProductForm(result.product);
+    productModal.show();
+}
+
+function syncCartProduct(product) {
+    const item = cart.find(row => Number(row.id) === Number(product.id));
+    if (!item) return;
+    item.name = product.product_name;
+    item.price = Number(product.selling_price);
+    item.stock = Number(product.quantity);
+    if (item.qty > item.stock) item.qty = Math.max(1, item.stock);
+    renderCart();
 }
 
 async function scanBarcode(code) {
@@ -228,6 +302,22 @@ document.getElementById('paymentAmount').oninput = recalc;
 document.querySelectorAll('.payment-shortcut').forEach(btn => btn.addEventListener('click', () => {
     document.getElementById('paymentMethod').value = btn.dataset.method;
 }));
+
+document.getElementById('productForm')?.addEventListener('submit', async e => {
+    e.preventDefault();
+    const form = new FormData(e.target);
+    form.append('action', 'update');
+    const result = await apiPost('../php/inventory_action.php', form);
+    notify(result.message, result.success ? 'success' : 'error');
+    if (!result.success) return;
+
+    const productId = form.get('id');
+    const updated = await apiGet(`../php/inventory_action.php?action=view&id=${productId}`);
+    if (updated.success) syncCartProduct(updated.product);
+
+    productModal?.hide();
+    await searchProducts(document.getElementById('productSearch').value);
+});
 
 document.getElementById('saveSale').onclick = async () => {
     const payload = {

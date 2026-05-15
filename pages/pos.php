@@ -61,4 +61,78 @@ render_header('Point of Sale', 'pos');
         </div>
     </div>
 </div>
+
+<?php if (is_admin()): ?>
+<div class="modal fade" id="productModal" tabindex="-1">
+    <div class="modal-dialog modal-xl modal-dialog-scrollable">
+        <form class="modal-content app-modal" id="productForm" enctype="multipart/form-data">
+            <div class="modal-header app-modal-header">
+                <div>
+                    <span class="modal-kicker">Product record</span>
+                    <h5 class="modal-title" id="productModalTitle">Edit Product</h5>
+                </div>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body app-modal-body">
+                <input type="hidden" name="id" id="productId">
+                <input type="hidden" name="duplicate_decision" id="duplicateDecision">
+                <input type="hidden" name="duplicate_reference_id" id="duplicateReferenceId">
+                <div id="duplicateWarning" class="d-none mb-3"></div>
+                <div class="modal-section">
+                    <div class="modal-section-title"><i class="bi bi-upc-scan"></i><span>Product Identity</span></div>
+                    <div class="row g-3">
+                        <div class="col-md-4">
+                            <label class="form-label">Barcode</label>
+                            <div class="input-group barcode-input-group">
+                                <span class="input-group-text bg-white"><i class="bi bi-upc-scan"></i></span>
+                                <input class="form-control" name="barcode" id="productBarcode" inputmode="numeric" autocomplete="off" spellcheck="false" placeholder="Scan or type barcode">
+                            </div>
+                        </div>
+                        <div class="col-md-8"><label class="form-label">Product Name</label><input class="form-control" name="product_name" required></div>
+                    </div>
+                </div>
+                <div class="modal-section">
+                    <div class="modal-section-title"><i class="bi bi-tags"></i><span>Classification</span></div>
+                    <div class="row g-3">
+                        <div class="col-md-3"><label class="form-label">Category</label><select class="form-select" name="category_id" id="category_id"></select></div>
+                        <div class="col-md-3"><label class="form-label">Brand</label><select class="form-select" name="brand_id" id="brand_id"></select></div>
+                        <div class="col-md-3"><label class="form-label">Unit</label><select class="form-select" name="unit_id" id="unit_id"></select></div>
+                        <div class="col-md-3"><label class="form-label">Business Type</label><select class="form-select" name="business_type_id" id="business_type_id"></select></div>
+                    </div>
+                </div>
+                <div class="modal-section">
+                    <div class="modal-section-title"><i class="bi bi-rulers"></i><span>Size & Packaging</span></div>
+                    <div class="row g-3">
+                        <div class="col-md-4"><label class="form-label">Size / Weight</label><input class="form-control" type="number" step="0.01" name="product_size_value" placeholder="150"></div>
+                        <div class="col-md-4"><label class="form-label">Size Unit</label><select class="form-select" name="product_size_unit"><option value="">N/A</option><option value="g">g</option><option value="kg">kg</option><option value="ml">ml</option><option value="L">L</option><option value="pcs">pcs</option><option value="tablet">tablet</option><option value="capsule">capsule</option></select></div>
+                        <div class="col-md-4"><label class="form-label">Package Type</label><input class="form-control" name="package_type" placeholder="Can, bottle, pack"></div>
+                    </div>
+                </div>
+                <div class="modal-section">
+                    <div class="modal-section-title"><i class="bi bi-cash-coin"></i><span>Pricing & Stock</span></div>
+                    <div class="row g-3">
+                        <div class="col-md-3"><label class="form-label">Cost Price</label><input class="form-control" type="number" step="0.01" name="cost_price" required></div>
+                        <div class="col-md-3"><label class="form-label">Selling Price</label><input class="form-control" type="number" step="0.01" name="selling_price" required></div>
+                        <div class="col-md-3"><label class="form-label">Quantity</label><input class="form-control" type="number" name="quantity" required></div>
+                        <div class="col-md-3"><label class="form-label">Reorder Level</label><input class="form-control" type="number" name="reorder_level" required></div>
+                    </div>
+                </div>
+                <div class="modal-section">
+                    <div class="modal-section-title"><i class="bi bi-image"></i><span>Supplier, Media & Notes</span></div>
+                    <div class="row g-3">
+                        <div class="col-md-4"><label class="form-label">Supplier</label><select class="form-select" name="supplier_id" id="supplier_id"></select></div>
+                        <div class="col-md-4"><label class="form-label">Expiration Date</label><input class="form-control" type="date" name="expiration_date"></div>
+                        <div class="col-md-4"><label class="form-label">Product Image</label><input class="form-control" type="file" name="image" accept="image/*"></div>
+                        <div class="col-12"><label class="form-label">Description</label><textarea class="form-control" name="description" rows="3" placeholder="Optional product notes, size, variant, or supplier details"></textarea></div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer app-modal-footer">
+                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button class="btn btn-success"><i class="bi bi-check2-circle"></i> Update Product</button>
+            </div>
+        </form>
+    </div>
+</div>
+<?php endif; ?>
 <?php render_footer(['pos.js']); ?>

@@ -98,7 +98,7 @@ if ($action === 'search') {
         WHERE $where
         ORDER BY p.product_name LIMIT 30");
     $stmt->execute($args);
-    json_response(['rows' => $stmt->fetchAll()]);
+    json_response(['rows' => $stmt->fetchAll(), 'is_admin' => is_admin()]);
 }
 
 if ($action === 'barcode') {
