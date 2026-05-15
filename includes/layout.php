@@ -11,6 +11,7 @@ function render_header(string $title, string $active = ''): void
         ['inventory', 'Inventory', 'inventory.php', 'bi-box-seam-fill', true],
         ['approval', 'Product Approval', 'product_approval.php', 'bi-patch-check-fill', is_admin()],
         ['pos', 'POS System', 'pos.php', 'bi-receipt-cutoff', true],
+        ['receipts', 'Buyer Receipts', 'receipts.php', 'bi-bag-check-fill', is_admin()],
         ['reports', 'Reports', 'reports.php', 'bi-bar-chart-fill', is_admin()],
         ['users', 'User Management', 'user_management.php', 'bi-people-fill', is_admin()],
         ['settings', 'Settings', 'settings.php', 'bi-gear-fill', is_admin()],

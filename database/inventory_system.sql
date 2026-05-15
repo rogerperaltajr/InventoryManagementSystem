@@ -77,6 +77,7 @@ CREATE TABLE product_approvals (
 CREATE TABLE sales (
     id INT AUTO_INCREMENT PRIMARY KEY,
     invoice_no VARCHAR(40) NOT NULL UNIQUE,
+    buyer_name VARCHAR(120) NULL,
     user_id INT NULL,
     subtotal DECIMAL(12,2) NOT NULL,
     discount DECIMAL(12,2) NOT NULL DEFAULT 0,

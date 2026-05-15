@@ -520,6 +520,22 @@ a {
     text-align: center;
 }
 
+.receipt-view-all {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    color: var(--primary);
+    font-weight: 800;
+    padding: 12px 14px;
+    text-decoration: none;
+    background: #f8fafc;
+}
+
+.receipt-view-all:hover {
+    background: #eff6ff;
+}
+
 .receipt-detail-summary {
     display: grid;
     grid-template-columns: repeat(4, minmax(0, 1fr));
@@ -1745,7 +1761,8 @@ a {
     .sidebar,
     .topbar,
     .panel.mb-3,
-    .btn {
+    .btn,
+    .receipt-actions-print {
         display: none !important;
     }
 

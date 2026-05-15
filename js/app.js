@@ -105,15 +105,16 @@ async function loadReceiptNotifications() {
     const data = await apiGet(receiptEndpoint('receipts'));
     const rows = data.rows || [];
     dot?.classList.toggle('d-none', !rows.length);
-    list.innerHTML = rows.map(row => `
-        <button class="receipt-notification-item" type="button" onclick="showReceiptDetail(${Number(row.id)}, '${escapeHtml(row.buyer_label)}')">
+    const receiptButtons = rows.map(row => `
+        <button class="receipt-notification-item" type="button" onclick="showReceiptDetail(${Number(row.id)}, decodeURIComponent('${encodeURIComponent(row.buyer_label)}'))">
             <span>
                 <strong>${escapeHtml(row.buyer_label)}</strong>
                 <small>${escapeHtml(row.invoice_no)} · ${escapeHtml(row.created_at)}</small>
             </span>
             <b>PHP ${money(row.total)}</b>
         </button>
-    `).join('') || '<div class="receipt-notification-empty">No receipts yet.</div>';
+    `).join('');
+    list.innerHTML = (receiptButtons || '<div class="receipt-notification-empty">No receipts yet.</div>') + '<a class="receipt-view-all" href="receipts.php"><i class="bi bi-list-ul"></i> View All</a>';
 }
 
 document.getElementById('refreshReceiptsBtn')?.addEventListener('click', event => {
