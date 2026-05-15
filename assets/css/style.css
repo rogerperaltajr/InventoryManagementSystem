@@ -1289,12 +1289,51 @@ a {
     top: 96px;
 }
 
+.pos-cart-scroll {
+    max-height: 260px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    border-bottom: 1px solid #edf2f7;
+    margin-bottom: 12px;
+}
+
+.pos-cart-scroll::-webkit-scrollbar {
+    width: 8px;
+}
+
+.pos-cart-scroll::-webkit-scrollbar-thumb {
+    background: #cbd5e1;
+    border-radius: 999px;
+}
+
+.pos-cart-table {
+    table-layout: fixed;
+    width: 100%;
+    margin-bottom: 0;
+}
+
+.pos-cart-table th,
 .pos-cart-table td {
     vertical-align: middle;
 }
 
+.pos-cart-table th:first-child,
 .pos-cart-table td:first-child {
-    min-width: 160px;
+    width: 43%;
+    min-width: 0;
+}
+
+.pos-cart-table th:nth-child(2),
+.pos-cart-table td:nth-child(2) {
+    width: 36%;
+}
+
+.pos-cart-table th:nth-child(3),
+.pos-cart-table td:nth-child(3) {
+    width: 21%;
+    font-size: .82rem;
+    text-align: right;
+    word-break: break-word;
 }
 
 .pos-qty-stepper {
@@ -1340,12 +1379,6 @@ a {
 .pos-qty-stepper input::-webkit-outer-spin-button {
     appearance: none;
     margin: 0;
-}
-
-.pos-remove-btn {
-    width: 34px;
-    height: 34px;
-    border-radius: 10px;
 }
 
 .select2-container--default .select2-selection--multiple {

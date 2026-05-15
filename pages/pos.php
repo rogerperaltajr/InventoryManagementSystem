@@ -36,7 +36,7 @@ render_header('Point of Sale', 'pos');
     <div class="col-xl-3 col-lg-4">
         <div class="panel">
             <h5>Cart</h5>
-            <div class="table-responsive"><table class="table table-sm pos-cart-table"><thead><tr><th>Item</th><th>Qty</th><th>Total</th><th></th></tr></thead><tbody id="cartRows"></tbody></table></div>
+            <div class="pos-cart-scroll"><table class="table table-sm pos-cart-table"><thead><tr><th>Item</th><th>Qty</th><th>Total</th></tr></thead><tbody id="cartRows"></tbody></table></div>
             <div class="mb-2"><label class="form-label">Discount</label><input id="discount" type="number" step="0.01" class="form-control" value="0"></div>
             <div class="mb-2">
                 <label class="form-label">Payment Method</label>

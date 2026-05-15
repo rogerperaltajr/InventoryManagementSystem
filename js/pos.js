@@ -120,8 +120,7 @@ function renderCart() {
                 </div>
             </td>
             <td>PHP ${money(i.price * i.qty)}</td>
-            <td><button class="btn btn-sm btn-outline-danger pos-remove-btn" onclick="removeCartItem(${idx})"><i class="bi bi-trash"></i></button></td>
-        </tr>`).join('') || '<tr><td colspan="4" class="text-center">Cart is empty.</td></tr>';
+        </tr>`).join('') || '<tr><td colspan="3" class="text-center">Cart is empty.</td></tr>';
     recalc();
 }
 
