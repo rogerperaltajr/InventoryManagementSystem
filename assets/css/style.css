@@ -292,6 +292,7 @@ a {
     top: 0;
     height: 100vh;
     box-shadow: 16px 0 36px rgba(15, 23, 42, .12);
+    transition: width .2s ease, padding .2s ease;
 }
 
 .brand {
@@ -299,6 +300,7 @@ a {
     gap: 12px;
     align-items: center;
     padding: 8px 8px 24px;
+    overflow: hidden;
 }
 
 .brand-mark {
@@ -318,11 +320,13 @@ a {
     display: block;
     font-weight: 800;
     line-height: 1.05;
+    white-space: nowrap;
 }
 
 .brand small {
     color: #94a3b8;
     font-size: .75rem;
+    white-space: nowrap;
 }
 
 .sidebar nav {
@@ -347,6 +351,7 @@ a {
     font-weight: 650;
     text-align: left;
     transition: background .18s ease, color .18s ease, transform .18s ease, box-shadow .18s ease;
+    white-space: nowrap;
 }
 
 .sidebar a i,
@@ -376,6 +381,7 @@ a {
     flex: 1;
     min-width: 0;
     background: linear-gradient(180deg, #f8fafc 0%, var(--bg) 170px);
+    transition: margin-left .2s ease;
 }
 
 .topbar {
@@ -1611,6 +1617,44 @@ a {
 
     .main {
         margin-left: 278px;
+    }
+
+    .sidebar-collapsed .sidebar {
+        width: 86px;
+        padding: 16px 12px;
+    }
+
+    .sidebar-collapsed .main {
+        margin-left: 86px;
+    }
+
+    .sidebar-collapsed .brand {
+        justify-content: center;
+        padding: 8px 0 24px;
+    }
+
+    .sidebar-collapsed .brand > div:not(.brand-mark),
+    .sidebar-collapsed .sidebar a span,
+    .sidebar-collapsed .sidebar-logout span {
+        display: none;
+    }
+
+    .sidebar-collapsed .sidebar a,
+    .sidebar-collapsed .sidebar-logout button {
+        justify-content: center;
+        gap: 0;
+        padding: 13px 0;
+    }
+
+    .sidebar-collapsed .sidebar a i,
+    .sidebar-collapsed .sidebar-logout i {
+        width: auto;
+        font-size: 1.1rem;
+    }
+
+    .sidebar-collapsed .sidebar a:hover,
+    .sidebar-collapsed .sidebar-logout button:hover {
+        transform: translateY(-1px);
     }
 }
 

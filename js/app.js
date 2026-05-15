@@ -4,6 +4,12 @@ document.getElementById('sidebarToggle')?.addEventListener('click', () => {
     document.querySelector('.sidebar')?.classList.toggle('open');
 });
 
+document.getElementById('sidebarSizeToggle')?.addEventListener('click', () => {
+    const root = document.documentElement;
+    const collapsed = root.classList.toggle('sidebar-collapsed');
+    localStorage.setItem('sidebarCollapsed', collapsed ? '1' : '0');
+});
+
 async function apiPost(url, data = {}) {
     const form = data instanceof FormData ? data : new FormData();
     if (!(data instanceof FormData)) {
@@ -45,4 +51,3 @@ function tableToImage(containerId, filename) {
         link.click();
     });
 }
-

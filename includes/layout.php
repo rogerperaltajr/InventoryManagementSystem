@@ -28,6 +28,11 @@ function render_header(string $title, string $active = ''): void
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet">
     <link href="<?= $base ?>/assets/css/style.css" rel="stylesheet">
+    <script>
+        if (localStorage.getItem('sidebarCollapsed') === '1') {
+            document.documentElement.classList.add('sidebar-collapsed');
+        }
+    </script>
 </head>
 <body>
 <div class="app-shell">
@@ -52,6 +57,7 @@ function render_header(string $title, string $active = ''): void
     <main class="main">
         <header class="topbar">
             <button class="icon-btn d-lg-none" id="sidebarToggle" type="button" aria-label="Open menu"><i class="bi bi-list"></i></button>
+            <button class="icon-btn d-none d-lg-inline-grid" id="sidebarSizeToggle" type="button" aria-label="Toggle navigation size" title="Toggle navigation size"><i class="bi bi-layout-sidebar-inset"></i></button>
             <div class="page-heading">
                 <h1><?= htmlspecialchars($title) ?></h1>
                 <span>Inventory operations, sales, and reports</span>
